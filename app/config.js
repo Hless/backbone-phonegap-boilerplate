@@ -4,6 +4,7 @@ require.config({
   paths: {
     // Make vendor easier to access.
     "vendor": "../vendor",
+    "router": "routers/router",
 
     // Almond is used to lighten the output filesize.
     "almond": "../vendor/bower/almond/almond",

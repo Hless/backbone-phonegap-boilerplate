@@ -7,14 +7,8 @@
   // tests.
   karma.loaded = function() {};
 
-  if (window.QUnit) {
-    // Disable auto start.  We'll call start once the async modules have
-    // loaded.
-    window.QUnit.config.autostart = false;
-  } else if (window.chai) {
-    // Optionally use chai with Mocha.
-    window.expect = window.chai.expect;
-  }
+  // Use chai with Mocha.
+  window.expect = window.chai.expect;
 
   // Set the application endpoint and load the configuration.
   require.config({

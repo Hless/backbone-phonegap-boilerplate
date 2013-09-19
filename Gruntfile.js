@@ -3,7 +3,10 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     // Wipe out previous builds and test reporting.
-    clean: ["dist/", "test/reports"],
+    clean: {
+      prebuild: ["dist/", "test/reports"],
+      postbuild: ["dist/app", "dist/vendor", "dist/assets/styles/styles.css"],
+    },
 
     // Run your source code through JSHint's defaults.
     jshint: ["app/**/*.js"],
@@ -14,7 +17,7 @@ module.exports = function(grunt) {
       release: {
         options: {
           mainConfigFile: "app/config.js",
-          generateSourceMaps: true,
+          generateSourceMaps: false,
           include: ["main"],
           insertRequire: ["main"],
           out: "dist/source.min.js",
@@ -42,6 +45,7 @@ module.exports = function(grunt) {
       }
     },
 
+
     // This task simplifies working with CSS inside Backbone Boilerplate
     // projects.  Instead of manually specifying your stylesheets inside the
     // HTML, you can use `@imports` and this task will concatenate only those
@@ -49,16 +53,17 @@ module.exports = function(grunt) {
     styles: {
       // Out the concatenated contents of the following styles into the below
       // development file path.
-      "dist/styles.css": {
+      "dist/assets/styles/styles.css": {
         // Point this to where your `index.css` file is location.
-        src: "app/styles/index.css",
+        src: "assets/styles/index.css",
 
         // The relative path to use for the @imports.
-        paths: ["app/styles"],
+        paths: ["assets/styles"],
+        prefix: './assets/styles/',
 
         // Rewrite image paths during release to be relative to the `img`
         // directory.
-        forceRelative: "/app/img/"
+        forceRelative: "/assets/img/"
       }
     },
 
@@ -66,7 +71,7 @@ module.exports = function(grunt) {
     cssmin: {
       release: {
         files: {
-          "dist/styles.min.css": ["dist/styles.css"]
+          "dist/assets/styles/styles.min.css": ["dist/assets/styles/styles.css"]
         }
       }
     },
@@ -106,23 +111,13 @@ module.exports = function(grunt) {
       release: {
         files: [
           { src: ["app/**"], dest: "dist/" },
+          { src: ["assets/img"], dest: "dist/assets/img" },
           { src: "vendor/**", dest: "dist/" }
         ]
       }
     },
 
-    compress: {
-      release: {
-        options: {
-          archive: "dist/source.min.js.gz"
-        },
-
-        files: ["dist/source.min.js"]
-      }
-    },
-
-    // Unit testing is provided by Karma.  Change the two commented locations
-    // below to either: mocha, jasmine, or qunit.
+    // Unit testing is provided by Karma. Tests are done by mocha + chai in phantomJS
     karma: {
       options: {
         basePath: process.cwd(),
@@ -137,9 +132,7 @@ module.exports = function(grunt) {
         frameworks: ["mocha"],
 
         plugins: [
-          "karma-jasmine",
           "karma-mocha",
-          "karma-qunit",
           "karma-phantomjs-launcher",
           "karma-coverage"
         ],
@@ -160,7 +153,6 @@ module.exports = function(grunt) {
           "test/runner.js",
 
           { pattern: "app/**/*.*", included: false },
-          // This directory must also be changed if you switch frameworks.
           { pattern: "test/mocha/**/*.spec.js", included: false },
           { pattern: "vendor/**/*.js", included: false }
         ]
@@ -201,12 +193,13 @@ module.exports = function(grunt) {
 
   // When running the default Grunt command, just lint the code.
   grunt.registerTask("default", [
-    "clean",
+    "clean:prebuild",
     "jshint",
     "processhtml",
     "copy",
     "requirejs",
     "styles",
     "cssmin",
+    "clean:postbuild"
   ]);
 };
