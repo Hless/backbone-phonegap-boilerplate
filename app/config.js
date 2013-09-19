@@ -6,6 +6,9 @@ require.config({
     "vendor": "../vendor",
     "router": "routers/router",
 
+    // Text is used to asynchronousley load templates
+    "text": "../vendor/bower/requirejs-text/text",
+
     // Almond is used to lighten the output filesize.
     "almond": "../vendor/bower/almond/almond",
 

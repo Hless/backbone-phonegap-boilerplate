@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     // Wipe out previous builds and test reporting.
     clean: {
-      prebuild: ["dist/", "test/reports"],
+      prebuild: ["dist/", "test/coverage/"],
       postbuild: ["dist/app", "dist/vendor", "dist/assets/styles/styles.css"],
     },
 
@@ -195,6 +195,7 @@ module.exports = function(grunt) {
   grunt.registerTask("default", [
     "clean:prebuild",
     "jshint",
+    "karma:run",
     "processhtml",
     "copy",
     "requirejs",

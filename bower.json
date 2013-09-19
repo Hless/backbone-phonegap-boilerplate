@@ -8,6 +8,7 @@
     "backbone": "~1.0.0",
     "jquery": "~2.0.3",
     "requirejs": "~2.1.8",
+    "requirejs-text": "*",
     "mocha": "~1.12.0",
     "chai": "~1.7.2",
     "sinon": "~1.7.1"
